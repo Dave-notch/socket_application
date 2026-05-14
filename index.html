@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script defer src="app.js"></script>
+    <title>socket_app</title>
+</head>
+<body>
+    <style>
+        html, body {
+            margin: 0;
+            background-color: #7a7c83;
+            height: 100%;
+            font-family: smooch sans;
+            scroll-behavior: smooth;
+         }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .soosiki{
+            margin-left: 1rem;
+         }
+        .sooceli{
+            margin-right: 1rem;
+         }
+
+        nav {
+            position: relative;
+            top: 0;
+            width: 100%;
+            backdrop-filter: blur(12px);
+            background: rgba(10, 14, 25, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 11px 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #e6eaff;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            position: relative;
+            text-decoration: none;
+            color: #cfd8ff;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0%;
+            height: 2px;
+            background: #4da3ff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            scale: 1.1;
+            transition: 0.5s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .label{
+            padding-left: 0.5rem;
+        }
+
+    </style>
+     <div class="flex flex-col gap-15">
+   <nav class="nav">
+      <div class="nav-container">
+        <div class="logo">𝕊𝕠𝕔𝕜𝕖𝕥_𝕒𝕡𝕡</div>
+
+
+        <div class="nav-links">
+          <a class="" href="#">Home</a>
+          <a class="" href="#">Trial</a>
+          <a href="#">Overview</a>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="flex justify-center items-center">
+        <div class="h-200  w-150 bg-white p-2 flex justify-center rounded-2xl">
+
+
+            <div class="flex flex-col gap-1">
+                <div class="w-130 h-190 bg-red-200 overflow-y-auto  p-2 rounded-2xl font-semibold flex justify-end flex-col gap-2 m-2">
+
+                    <div class="flex justify-start bg-gray-200 p-2 soosiki">
+                        s
+                    </div>
+
+                    <div class="flex justify-end p-2 bg-green-200 sooceli">
+                        s
+                        
+                    </div>
+                    <div class="flex justify-start bg-gray-200 p-2 soosiki">
+                        s
+                    </div>
+                    
+
+               </div>
+            
+
+           <div class="flex flex-row gap-2">
+             
+            <input class="w-[clamp(2rem,90vw,26.8rem)] rounded-xl bg-blue-200 h-8 py-2 label outline-none focus:ring-0 focus:ring-black-200" type="text">
+            <button class="bg-red-500 w-20 text-white text-2xl rounded-xl font-semibold cursor-pointer">Send</button>
+           </div>
+            </div>
+
+        </div>
+        
+    </div>
+
+
+   
+    
+</body>
+</html>

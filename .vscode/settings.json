@@ -1,0 +1,22 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "query_timeout": 30,
+                "statement_timeout": 30,
+                "idleTimeoutMillis": 30,
+                "max": 50,
+                "connectionTimeoutMillis": 6000
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "socketDB",
+            "database": "socketdb",
+            "username": "postgres",
+            "connectionTimeout": 30
+        }
+    ]
+}
