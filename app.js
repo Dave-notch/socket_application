@@ -2,6 +2,7 @@ import express from 'express'
 import pg from 'pg'
 import cors from 'cors'
 import dotenv, { config } from 'dotenv'
+import { text } from 'stream/consumers'
 
 const {Pool} =  pg
 dotenv.config()
@@ -24,5 +25,12 @@ app.post("/socket_DB", async (req,res,next)=>{
         console.err(err)
         next(err)
     }
+
+})
+
+
+const socket = io("ws://localhost:8080")
+
+socket.on('message',text =>{
 
 })
