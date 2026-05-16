@@ -14,76 +14,188 @@
 </head>
 <body>
     <style>
-        html, body {
-            margin: 0;
-            background-color: #7a7c83;
-            height: 100%;
-            font-family: smooch sans;
-            scroll-behavior: smooth;
-         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+       html, body {
+  margin: 0;
+  background-color: #0b0f1a;
+  height: 100%;
+  font-family: smooch sans;
+  scroll-behavior: smooth;
+}
+
+.bg-wrapper {
+
+  background-position: center top;
+  background-size: cover;
+
+
+
+  overflow: hidden;
+  height: 96.3dvh;
+}
+
+
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.soosiki{
+  margin-left: 1rem;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  backdrop-filter: blur(12px);
+  background: rgba(10, 14, 25, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 11px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #e6eaff;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  position: relative;
+  text-decoration: none;
+  color: #cfd8ff;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+  
+  
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 2px;
+  background: #4da3ff;
+  transition: width 0.3s ease;
+}
+
+        .label{
+            padding-left: 0.5rem;
         }
-        .soosiki{
-            margin-left: 1rem;
-         }
-        .sooceli{
+        .label2{
+            padding-right: 0.5rem;
+        }
+
+        .label3{
+            padding-bottom: 0.5rem;
+        }
+
+        
+
+        .corner{
+            margin-left: 18.9rem;
+        }
+           .sooceli{
             margin-right: 1rem;
          }
 
-        nav {
-            position: relative;
-            top: 0;
-            width: 100%;
-            backdrop-filter: blur(12px);
-            background: rgba(10, 14, 25, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 11px 20px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+        .menu-toggle {
+            display: none;
+            font-size: 1.6rem;
+            background: none;
+            border: none;
             color: #e6eaff;
             cursor: pointer;
-        }
+        } 
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
 
-        .nav-links a {
-            position: relative;
-            text-decoration: none;
-            color: #cfd8ff;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
+        @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+       }
 
-        .nav-links a::after {
-            content: "";
+         .nav-links {
             position: absolute;
-            left: 0;
-            bottom: -6px;
-            width: 0%;
-            height: 2px;
-            background: #4da3ff;
-            transition: width 0.3s ease;
-        }
+            top: 100%;
+            right: 0;
+            background: rgba(10, 14, 25, 0.95);
+            backdrop-filter: blur(10px);
+            flex-direction: column;
+            width: 200px;
+            padding: 16px;
+            gap: 16px;
+            display: none;
+         }
+
+          .nav-links.active {
+            display: flex;
+            }
+       }
+
+
+          @media (max-width: 480px) {
+
+             /* .nav-container {
+              display: none;
+ 
+              } */
+
+              .soosiki{
+                margin-left: 2rem;
+              }
+
+              .bg-wrapper {
+                height: 100dvh; 
+            }
+        
+              .side-barA{
+                width: 0vh;
+                min-height: 96dvh;
+            }
+
+            input{
+              width: 35vh;
+              margin-left: 2rem;
+            }
+
+            .send{
+              margin-right: 2rem;
+            }
+
+
+
+            .innerGR{
+              width: 9rem;
+            }
+     }
+  
+
+    
+
+
+      @media (hover: hover) {
+    
 
         .nav-links a:hover {
             color: #ffffff;
@@ -92,17 +204,19 @@
         }
 
         .nav-links a:hover::after {
-            width: 100%;
-        }
-        .label{
-            padding-left: 0.5rem;
-        }
+                  width: 100%;
+       }
+}
 
     </style>
      <div class="flex flex-col gap-15">
    <nav class="nav">
       <div class="nav-container">
         <div class="logo">𝕊𝕠𝕔𝕜𝕖𝕥_𝕒𝕡𝕡</div>
+
+           <button class="menu-toggle" aria-label="Toggle menu">
+              ☰
+           </button>
 
 
         <div class="nav-links">
@@ -113,22 +227,25 @@
       </div>
     </nav>
 
-    <div class="flex justify-center items-center">
-        <div class="h-200  w-150 bg-white p-2 flex justify-center m-1 rounded-2xl">
+    <div class="flex justify-center items-center rounded bg-wrapper">
+        
             <div class="flex flex-col gap-1">
-                <div class="w-130 h-190 bg-red-200 overflow-y-auto overflow-x-hidden p-2 rounded-2xl font-semibold flex justify-end  m-2" id="text_area">
-                    <div id="messeges" class="flex justify-end">
-                        <div class="flex justify-start bg-gray-200 p-2  hidden soosiki">
-                        s
-                        </div>
+                <div class="bg-gray-500 w-128 h-190 rounded-xl shadow-2xl border border:blue-200 flex side-barA p-10 opacity-75" id="text_area">
+                    <div id="messeges" class="flex flex-col justify-end min-h-full label3 gap-2">
+                        <div class="flex justify-start bg-gray-200 pb-2 w-50 rounded rounded-tl-none label flex-col gap-1 soosiki innerGR">
+                         <div>
+                            hey howdy!?
+                         </div>
+                         <p class="text-sm text-green-700 border-t flex label2 justify-end">7:00</p>
+                        </div> 
                     </div>
                </div>
            <div class="flex flex-row gap-2">  
-            <input class="w-[clamp(2rem,90vw,26.8rem)] rounded-xl bg-blue-200 h-8 py-2 label outline-none focus:ring-1 focus:ring-green-200" id="input_area" type="text">
-            <button class="bg-red-500 w-20 text-white text-2xl rounded-xl font-semibold hover:bg-red-400 cursor-pointer" id="SendBtn">Send</button>
+            <input class="w-[clamp(2rem,90vw,26.8rem)] rounded-xl bg-blue-200 h-8 py-2 label outline-none focus:ring-1 focus:ring-green-200 " placeholder="Message" id="input_area" type="text">
+            <button class="bg-green-500 w-20 text-white text-2xl rounded-xl font-semibold hover:bg-red-400 cursor-pointer send" id="SendBtn">Send</button>
            </div>
         </div>
-        </div>
+
     </div>
   <script src="fr_main.js"></script> 
 </body>
