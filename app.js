@@ -29,8 +29,8 @@ app.post("/socket_DB", async (req,res,next)=>{
 })
 
 
-const socket = io("ws://localhost:8080")
+// const socket = io("ws://localhost:8080")
 
-socket.on('message',text =>{
+// socket.on('message',text =>{
 
-})
+// })

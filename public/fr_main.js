@@ -1,7 +1,7 @@
 
 const toggle = document.querySelector(".menu-toggle");
 const links = document.querySelector(".nav-links");
-let username = prompt("Enter your name:");
+
 
 
 
@@ -16,12 +16,12 @@ let input_area=document.getElementById("input_area")
 
 
 
-const socket = io("ws://localhost:8080")
+const socket = io()
 
-socket.on('message',(data) =>{
+socket.on('message',text =>{
 
     
-createMessage(data.username, data.text)
+createMessage(text)
 
 
  
@@ -33,15 +33,17 @@ SendBtn.addEventListener("click",()=>{
     let in_area=input_area.value
   
 
-    if(in_area){
-    socket.emit('message',{
-        username:username,
-        text: in_area
-    })
-    input_area.value=""
+      if (in_area) {
+
+        socket.emit("message", in_area);
+
+        input_area.value = "";
+
     }
 
-})
+});
+
+
 
 function createMessage(text){
     let el=document.createElement("div")
@@ -55,7 +57,7 @@ function createMessage(text){
         minute: "2-digit"
     })
     el3.innerHTML=time
-    el2.innerHTML = `${username}: ${text}`;
+    el2.innerHTML =text;
 
     el.appendChild(el2)
     el.appendChild(el3)

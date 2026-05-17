@@ -1,8 +1,14 @@
 import http from 'http'
 import { Server } from 'socket.io'
+import express from 'express'
+import path from "path";
+
+const app=express()
+
+app.use(express.static("public"));
 
 
-const server = http.createServer()
+const server = http.createServer(app)
 
 const io = new Server(server,{
     cors: {origin: "*"}
@@ -11,12 +17,14 @@ const io = new Server(server,{
 
 io.on('connection',(socket)=>{
     console.log('a user connected');
-    socket.on('message',(data)=>{
-        console.log(data);
-        io.emit('message',`${data.username} said ${message}`)
+    socket.on('message',(message)=>{
+        console.log(message);
+        io.emit('message',`${socket.id.substring(0,2)} said ${message}`)
         
     })
     
 });
-
+app.get("/", (req, res) => {
+    res.sendFile(path.resolve("public/index.html"));
+});
 server.listen(8080,()=> console.log('listening port 8080'));
