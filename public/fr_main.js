@@ -2,22 +2,13 @@
 const toggle = document.querySelector(".menu-toggle");
 const links = document.querySelector(".nav-links");
 
-
-
-
-
 toggle.addEventListener("click", () => {
 links.classList.toggle("active");
   });
-
 let SendBtn=document.getElementById("SendBtn")
 let input_area=document.getElementById("input_area")
 
-
-
-
 const socket = io()
-
 socket.on('message',(data)=>{
 
     let isME=data.id===socket.id
@@ -28,31 +19,16 @@ socket.on('message',(data)=>{
     }else{
         recieving(data.text)
     }
-
-    
-
-
-
- 
 })
-
-
 
 SendBtn.addEventListener("click",()=>{
     let in_area=input_area.value
-  
 
       if (in_area) {
-
         socket.emit("message", in_area);
-
         input_area.value = "";
-
     }
-
 });
-
-
 
 function createMessage(text){
     let el=document.createElement("div")
@@ -71,7 +47,6 @@ function createMessage(text){
     el.appendChild(el2)
     el.appendChild(el3)
     document.getElementById("messeges").appendChild(el);
-
 }
 
 function recieving(text){
@@ -91,5 +66,4 @@ function recieving(text){
     el.appendChild(el2)
     el.appendChild(el3)
     document.getElementById("messeges").appendChild(el);
-
 }
