@@ -1,4 +1,3 @@
-
 const toggle = document.querySelector(".menu-toggle");
 const links = document.querySelector(".nav-links");
 
@@ -9,6 +8,31 @@ let SendBtn=document.getElementById("SendBtn")
 let input_area=document.getElementById("input_area")
 
 const socket = io()
+
+SendBtn.addEventListener("click",async()=>{
+    let in_area=input_area.value
+
+      if (in_area) {
+        
+        // input_area.value = "";
+
+        const res= await fetch("/socketDB",{
+            method:"POST",
+            headers:{
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({
+                in_area
+            })
+        })
+        const data = await res.json()
+        console.log(data);
+
+        socket.emit("message", in_area);
+        
+    }
+});
+
 socket.on('message',(data)=>{
 
     let isME=data.id===socket.id
@@ -21,14 +45,7 @@ socket.on('message',(data)=>{
     }
 })
 
-SendBtn.addEventListener("click",()=>{
-    let in_area=input_area.value
 
-      if (in_area) {
-        socket.emit("message", in_area);
-        input_area.value = "";
-    }
-});
 
 function createMessage(text){
     let el=document.createElement("div")
