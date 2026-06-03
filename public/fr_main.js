@@ -49,7 +49,7 @@ socket.on('message',(data)=>{
 
 function createMessage(text){
     let el=document.createElement("div")
-    el.className="flex justify-end p-2 bg-green-200 w-50 label corner rounded flex-col gap-1 rounded-tr-none label2 sooceli innerGR"
+    el.className="flex justify-end pl-9 bg-green-200 w-70 label corner rounded flex-col gap-1 rounded-tr-none label2 sooceli innerGR"
     let el2=document.createElement("div")
     let el3=document.createElement("p")
     el3.className="text-sm text-green-700 border-t flex label2 justify-end"
@@ -68,7 +68,7 @@ function createMessage(text){
 
 function recieving(text){
     let el=document.createElement("div")
-    el.className="flex justify-start bg-gray-200 pb-2 w-50 rounded rounded-tl-none label flex-col gap-1 soosiki innerGR"
+    el.className="flex justify-start bg-gray-200 pb-2 w-70 rounded rounded-tl-none label flex-col gap-1 soosiki innerGR"
     let el2=document.createElement("div")
     let el3=document.createElement("p")
     el3.className="text-sm text-green-700 border-t flex label2 justify-end"
