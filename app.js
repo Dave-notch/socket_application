@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import path from "path";
 import http from 'http'
 import { Server } from 'socket.io'
+import bcrypt from 'bcrypt'
 
 
 // const {Pool} =  pg
@@ -72,8 +73,81 @@ app.post("/socketDB", async (req,res,next)=>{
 })
 
 
-// const socket = io("ws://localhost:8080")
+app.post("/sign_UP", async (req,res,next)=>{
+   console.log(req.body)
+  try{
+    const {userName,userEmail,pass} = req.body
+    const hashedPassowrd= await bcrypt.hash(pass, 10)
 
-// socket.on('message',text =>{
+     if(!userName || !userEmail || !pass){
+      return res.status(400).send({message:"fields are empty please fill them up"})
+     }
 
-// })
+    const [UserRows] =  await pool.query(
+      `SELECT * FROM sign_UP WHERE name = ?
+      `,[userName]
+     )
+      
+    const [rowsEmail] =  await pool.query(
+      `SELECT * FROM sign_UP WHERE email = ?
+      `,[userEmail]
+     )
+      
+    const useremail=rowsEmail[0]
+    const User=UserRows[0]
+    
+
+    if(useremail && User){
+      return res.status(401).send({message:"Error userName and Email already exists"});
+     }else if(User){
+      return res.status(401).send({message:"Error userName already exists"});
+     }else if(useremail){
+      return res.status(401).send({message:"Error Email already exists"});
+     }
+
+
+
+    await pool.query(
+      `INSERT INTO sign_UP (name, email,pass )
+      VALUES (?,?,?)
+      `,[userName,userEmail,hashedPassowrd]
+     )
+
+     res.status(201).json({ message: "User created successfully" });
+  }catch(err){
+    console.error(err)
+    next(err)
+  }
+ 
+})
+
+
+app.post("/sign_UP/login", async (req,res,next)=>{
+  try{
+    const {logEmail,loginPass} = req.body
+    const [row] = await pool.query(`SELECT * FROM sign_UP WHERE
+        email=?`,[logEmail]
+      )
+
+      const user=row[0]
+
+      if(!user){
+        return res.status(401).send({message: "User not found"})
+      }
+
+      
+
+      const isMatch= await bcrypt.compare(loginPass,user.pass)
+
+      if(!isMatch){
+        return res.status(401).send({message: "Wrong password"})
+      }
+
+    res.status(201).send({ message: `Logged in successfully ${user.name}`});
+ 
+  }catch(err){
+    console.error(err)
+    next(err)
+  }
+
+})
