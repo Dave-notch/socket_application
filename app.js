@@ -6,6 +6,7 @@ import path from "path";
 import http from 'http'
 import { Server } from 'socket.io'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken';
 
 
 // const {Pool} =  pg
@@ -79,31 +80,33 @@ app.post("/sign_UP", async (req,res,next)=>{
     const {userName,userEmail,pass} = req.body
     const hashedPassowrd= await bcrypt.hash(pass, 10)
 
-     if(!userName || !userEmail || !pass){
-      return res.status(400).send({message:"fields are empty please fill them up"})
-     }
+    //  if(!userName || !userEmail || !pass){
+    //   return res.status(400).send({message:"fields are empty please fill them up"})
+    //  }
 
-    const [UserRows] =  await pool.query(
+    const [name] =  await pool.query(
       `SELECT * FROM sign_UP WHERE name = ?
       `,[userName]
      )
       
-    const [rowsEmail] =  await pool.query(
+    const [email]=  await pool.query(
       `SELECT * FROM sign_UP WHERE email = ?
       `,[userEmail]
      )
       
-    const useremail=rowsEmail[0]
-    const User=UserRows[0]
+    const useremail=email[0]
+    const User=name[0]
     
 
     if(useremail && User){
-      return res.status(401).send({message:"Error userName and Email already exists"});
+      return res.status(401).json({message:"Error userName and Email already exists"});
      }else if(User){
-      return res.status(401).send({message:"Error userName already exists"});
+      return res.status(401).json({message:"Error userName already exists"});
      }else if(useremail){
-      return res.status(401).send({message:"Error Email already exists"});
+      return res.status(401).json({message:"Error Email already exists"});
      }
+
+    
 
 
 
@@ -113,7 +116,22 @@ app.post("/sign_UP", async (req,res,next)=>{
       `,[userName,userEmail,hashedPassowrd]
      )
 
+     const token=jwt.sign(
+        {userid: User.id},
+        process.env.JWT_SECRET,
+        {expiresIn:"7d"}
+     )
+
+     res.json({message:token})
      res.status(201).json({ message: "User created successfully" });
+
+    //  console.log("step 1");
+    // console.log(UserRows, rowsEmail);
+    // console.log("step 2");
+
+    //  setTimeout(()=>{
+    //     res.redirect()
+    //  })
   }catch(err){
     console.error(err)
     next(err)
@@ -142,6 +160,14 @@ app.post("/sign_UP/login", async (req,res,next)=>{
       if(!isMatch){
         return res.status(401).send({message: "Wrong password"})
       }
+
+    const token=jwt.sign(
+        {userid: user.id},
+        process.env.JWT_SECRET,
+        {expiresIn:"7d"}
+     )
+
+    res.send({message:token})
 
     res.status(201).send({ message: `Logged in successfully ${user.name}`});
  

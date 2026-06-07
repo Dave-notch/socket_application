@@ -209,33 +209,37 @@ signupBtn.addEventListener("click", async() => {
         confirmPassword.style.border = "1px solid rgba(23, 207, 78, 1)";
         signuplabelPassword.style.color = "rgba(23, 207, 78, 1)";
         
-
+        //  const token=localStorage.getItem("token")
          const res = await fetch("/sign_UP", {
-          method: "POST",
-          headers: {"Content-type": "application/json"
-          },
-          body: JSON.stringify({
-            userName,
-            userEmail,
-            pass
-          }) 
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                // Authorization:`Bearer ${token}`
+
+            },
+            body: JSON.stringify({
+                userName,
+                userEmail,
+                pass
+            }) 
 
          })
         const data = await res.json()
-         if(res.ok){
-    
+         if(res.ok){ 
           successBtn.style.display="block"
           successBtn.innerHTML=data.message;
-          
 
           setTimeout(() => {
             successBtn.style.display="none"
-           
-          }, 3000);
-
+                  }, 3000);
          }else{
           successBtn.successBtnCL="bg-red-400"
           successBtn.innerHTML="Something went wrong";
+         }
+
+         if(data.token){
+            localStorage.setItem("token",data.token)
+            window.location.replace("/main.html")
          }
        
       
@@ -293,8 +297,12 @@ signinBtn.addEventListener("click", async()=>{
 
           setTimeout(() => {
             LGsuccessBtn.style.display="none"
-           
           }, 10000);
+
+        if(data.token){
+            localStorage.setItem("token",data.token)
+            window.location.replace("/main.html")
+         }
        
     }else if(!emailRegex.test(logEmail) &&!loginPass){
     loginEmail.style.border="1px solid rgb(214, 108, 108)"
