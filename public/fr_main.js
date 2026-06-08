@@ -1,6 +1,8 @@
 const toggle = document.querySelector(".menu-toggle");
 const links = document.querySelector(".nav-links");
 
+
+
 toggle.addEventListener("click", () => {
 links.classList.toggle("active");
   });
@@ -84,3 +86,25 @@ function recieving(text){
     el.appendChild(el3)
     document.getElementById("messeges").appendChild(el);
 }
+
+const token=localStorage.getItem("token")
+async function checkJwt(){
+    const res=await fetch("/checkJWT",{
+        method:"POST",
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+
+    })
+
+    const data = await res.json()
+
+    console.log(data);
+
+    if(data.userid !== undefined){
+
+
+    }
+}
+
+checkJwt()

@@ -7,6 +7,7 @@ import http from 'http'
 import { Server } from 'socket.io'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
+import { error } from 'console';
 
 
 // const {Pool} =  pg
@@ -48,10 +49,6 @@ io.on('connection',(socket)=>{
     })
     
 });
-app.get("/", (req, res) => {
-    res.sendFile(path.resolve("public/index.html"));
-});
-server.listen(8080,()=> console.log('listening port 8080'));
 
 
 
@@ -84,26 +81,26 @@ app.post("/sign_UP", async (req,res,next)=>{
     //   return res.status(400).send({message:"fields are empty please fill them up"})
     //  }
 
-    const [name] =  await pool.query(
+    const [NAME] =  await pool.query(
       `SELECT * FROM sign_UP WHERE name = ?
       `,[userName]
      )
       
-    const [email]=  await pool.query(
+    const [EMAIL]=  await pool.query(
       `SELECT * FROM sign_UP WHERE email = ?
       `,[userEmail]
      )
       
-    const useremail=email[0]
-    const User=name[0]
+    const useremail=EMAIL[0]
+    const User=NAME[0]
     
 
     if(useremail && User){
-      return res.status(401).json({message:"Error userName and Email already exists"});
+      return res.status(401).json({error:"UserName and Email already exists"});
      }else if(User){
-      return res.status(401).json({message:"Error userName already exists"});
+      return res.status(401).json({error:"UserName already exists"});
      }else if(useremail){
-      return res.status(401).json({message:"Error Email already exists"});
+      return res.status(401).json({error:"Email already exists"});
      }
 
     
@@ -116,6 +113,8 @@ app.post("/sign_UP", async (req,res,next)=>{
       `,[userName,userEmail,hashedPassowrd]
      )
 
+     const check =jwt.compare(token,refresh)
+
      const token=jwt.sign(
         {userid: User.id},
         process.env.JWT_SECRET,
@@ -125,19 +124,16 @@ app.post("/sign_UP", async (req,res,next)=>{
      res.json({message:token})
      res.status(201).json({ message: "User created successfully" });
 
-    //  console.log("step 1");
-    // console.log(UserRows, rowsEmail);
-    // console.log("step 2");
-
-    //  setTimeout(()=>{
-    //     res.redirect()
-    //  })
   }catch(err){
     console.error(err)
     next(err)
   }
  
 })
+
+// app.get('/hello', async (req,res,next)=>{
+
+// })
 
 
 app.post("/sign_UP/login", async (req,res,next)=>{
@@ -150,7 +146,7 @@ app.post("/sign_UP/login", async (req,res,next)=>{
       const user=row[0]
 
       if(!user){
-        return res.status(401).send({message: "User not found"})
+        return res.status(401).send({error: "User not found"})
       }
 
       
@@ -158,7 +154,7 @@ app.post("/sign_UP/login", async (req,res,next)=>{
       const isMatch= await bcrypt.compare(loginPass,user.pass)
 
       if(!isMatch){
-        return res.status(401).send({message: "Wrong password"})
+        return res.status(401).send({error: "Wrong password"})
       }
 
     const token=jwt.sign(
@@ -167,7 +163,7 @@ app.post("/sign_UP/login", async (req,res,next)=>{
         {expiresIn:"7d"}
      )
 
-    res.send({message:token})
+    res.send({token:token})
 
     res.status(201).send({ message: `Logged in successfully ${user.name}`});
  
@@ -177,3 +173,14 @@ app.post("/sign_UP/login", async (req,res,next)=>{
   }
 
 })
+
+app.post("/checkJWT", async (req,res)=>{
+  const token = headers.Authorization.split("")[1]
+  const decoded=jwt.verify(token,process.env.JWT_SECRET)
+  res.json({userid:decoded.userid})
+})
+
+app.get("/", (req, res) => {
+    res.sendFile(path.resolve("public/index.html"));
+});
+server.listen(8080,()=> console.log('listening port 8080'));

@@ -209,12 +209,11 @@ signupBtn.addEventListener("click", async() => {
         confirmPassword.style.border = "1px solid rgba(23, 207, 78, 1)";
         signuplabelPassword.style.color = "rgba(23, 207, 78, 1)";
         
-        //  const token=localStorage.getItem("token")
+        
          const res = await fetch("/sign_UP", {
             method: "POST",
             headers: {
-                "Content-type": "application/json",
-                // Authorization:`Bearer ${token}`
+                "Content-type": "application/json"
 
             },
             body: JSON.stringify({
@@ -225,45 +224,52 @@ signupBtn.addEventListener("click", async() => {
 
          })
         const data = await res.json()
-         if(res.ok){ 
+        if(res.ok){
+    
           successBtn.style.display="block"
+          successBtn.className="w-full bg-green-400 text-white h-10 text-xl rounded-xl font-semibold hover:bg-green-500 transition successBtnCL"
           successBtn.innerHTML=data.message;
+          
 
           setTimeout(() => {
             successBtn.style.display="none"
-                  }, 3000);
+           
+          }, 3000);
+
          }else{
-          successBtn.successBtnCL="bg-red-400"
-          successBtn.innerHTML="Something went wrong";
+          successBtn.style.display="block"
+          successBtn.className="w-full bg-red-400 text-white h-10 text-xl rounded-xl font-semibold hover:bg-red-500 transition successBtnCL"
+          successBtn.innerHTML=data.error;
+
+           setTimeout(() => {
+            successBtn.style.display="none"
+           
+          }, 3000);
          }
 
          if(data.token){
             localStorage.setItem("token",data.token)
             window.location.replace("/main.html")
-         }
-       
-      
-       
-          
+         }      
     }
 
         const symbols = [
-  "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", 
-  ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"
-];
-    const uppercase=[
-  "A","B","C","D","E","F","G","H","I","J","K","L","M",
-  "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
-];
+            "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", 
+            ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"
+        ];
+        const uppercase=[
+            "A","B","C","D","E","F","G","H","I","J","K","L","M",
+            "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+        ];
 
-    let isLengthValid = pass.length >= 8 && pass.length <= 14;
+      let isLengthValid = pass.length >= 8 && pass.length <= 14;
       let hasSymbol = symbols.some(s => pass.includes(s));
-  let hasUppercase = uppercase.some(u => pass.includes(u));
+      let hasUppercase = uppercase.some(u => pass.includes(u));
 
-    signupPassword.style.border =
-    !isLengthValid && !hasSymbol && !hasUppercase
-      ? "1px solid rgb(214, 108, 108)"
-      : "";
+      signupPassword.style.border =
+      !isLengthValid && !hasSymbol && !hasUppercase
+        ? "1px solid rgb(214, 108, 108)"
+        : "";
 
     
 });
@@ -291,17 +297,35 @@ signinBtn.addEventListener("click", async()=>{
          })
           
           const data = await res.json()
-          console.log(data)
+          if(res.ok){
+    
           LGsuccessBtn.style.display="block"
+          LGsuccessBtn.className="w-full bg-green-400 text-white h-10 text-xl rounded-xl font-semibold hover:bg-green-500 transition successBtnCL"
           LGsuccessBtn.innerHTML=data.message;
+          
 
           setTimeout(() => {
             LGsuccessBtn.style.display="none"
-          }, 10000);
+           
+          }, 3000);
+
+         }else{
+          LGsuccessBtn.style.display="block"
+          LGsuccessBtn.className="w-full bg-red-400 text-white h-10 text-xl rounded-xl font-semibold hover:bg-red-500 transition successBtnCL"
+          LGsuccessBtn.innerHTML=data.error;
+
+           setTimeout(() => {
+            LGsuccessBtn.style.display="none"
+           
+          }, 3000);
+         }
+
 
         if(data.token){
             localStorage.setItem("token",data.token)
             window.location.replace("/main.html")
+         }else{
+
          }
        
     }else if(!emailRegex.test(logEmail) &&!loginPass){
