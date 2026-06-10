@@ -163,9 +163,7 @@ app.post("/sign_UP/login", async (req,res,next)=>{
         {expiresIn:"7d"}
      )
 
-    res.send({token:token})
-
-    res.status(201).send({ message: `Logged in successfully ${user.name}`});
+    return res.status(201).send({ message: `Success: ${user.name}`,token:token});
  
   }catch(err){
     console.error(err)

@@ -297,11 +297,13 @@ signinBtn.addEventListener("click", async()=>{
          })
           
           const data = await res.json()
-          if(res.ok){
+          if(res.ok && data.token){
     
           LGsuccessBtn.style.display="block"
           LGsuccessBtn.className="w-full bg-green-400 text-white h-10 text-xl rounded-xl font-semibold hover:bg-green-500 transition successBtnCL"
           LGsuccessBtn.innerHTML=data.message;
+          localStorage.setItem("token",data.token)
+          window.location.replace("/main.html")
           
 
           setTimeout(() => {
@@ -321,12 +323,6 @@ signinBtn.addEventListener("click", async()=>{
          }
 
 
-        if(data.token){
-            localStorage.setItem("token",data.token)
-            window.location.replace("/main.html")
-         }else{
-
-         }
        
     }else if(!emailRegex.test(logEmail) &&!loginPass){
     loginEmail.style.border="1px solid rgb(214, 108, 108)"
