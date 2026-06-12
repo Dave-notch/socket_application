@@ -155,7 +155,7 @@ app.post("/sign_UP/login", async (req,res,next)=>{
 async function checkJWT(req,res,next){
   const token = req.headers.authorization?.split(" ")[1]
   if(!token){
-    res.status(401).json({error: "no Token!!"})
+    return res.status(401).json({error: "no Token!!"})
   }
   try{
       const decoded=jwt.verify(token,process.env.JWT_SECRET)
@@ -169,6 +169,10 @@ async function checkJWT(req,res,next){
   }
 
 }
+
+// app.post("/checkJWT", checkJWT, async (req,res)=>{
+//   res.json({message: "Token is valid", user: req.user})
+// })
 
 app.get("/", (req, res) => {
     res.sendFile(path.resolve("public/index.html"));

@@ -17,11 +17,12 @@ SendBtn.addEventListener("click",async()=>{
       if (in_area) {
         
         // input_area.value = "";
-
+        const token=localStorage.getItem("token")
         const res= await fetch("/socketDB",{
             method:"POST",
             headers:{
-                "Content-type": "application/json"
+                "Content-type": "application/json",
+                authorization:`Bearer ${token}`
             },
             body: JSON.stringify({
                 in_area
@@ -87,24 +88,24 @@ function recieving(text){
     document.getElementById("messeges").appendChild(el);
 }
 
-const token=localStorage.getItem("token")
-async function checkJwt(){
-    const res=await fetch("/checkJWT",{
-        method:"POST",
-        headers:{
-            Authorization:`Bearer ${token}`
-        }
+// const token=localStorage.getItem("token")
+// async function checkJwt(){
+//     const res=await fetch("/checkJWT",{
+//         method:"POST",
+//         headers:{
+//             authorization:`Bearer ${token}`
+//         }
 
-    })
+//     })
 
-    const data = await res.json()
+//     const data = await res.json()
 
-    console.log(data);
+//     console.log(data);
 
-    if(data.userid !== undefined){
+//     if(data.userid !== undefined){
 
 
-    }
-}
+//     }
+// }
 
-checkJwt()
+// checkJwt()
