@@ -16,7 +16,7 @@ SendBtn.addEventListener("click",async()=>{
 
       if (in_area) {
         
-        input_area.value = "";
+        // input_area.value = "";
 
         const res= await fetch("/socketDB",{
             method:"POST",

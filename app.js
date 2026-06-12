@@ -7,7 +7,7 @@ import http from 'http'
 import { Server } from 'socket.io'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
-import { error } from 'console';
+
 
 
 // const {Pool} =  pg
@@ -28,14 +28,9 @@ app.use(express.static("public"));
 
 
 
-
-
-
 const server = http.createServer(app)
-
 const io = new Server(server,{
     cors: {origin: "*"}
-
 });
 
 io.on('connection',(socket)=>{
@@ -51,15 +46,18 @@ io.on('connection',(socket)=>{
 });
 
 
-
-app.post("/socketDB", async (req,res,next)=>{
+app.post("/socketDB", checkJWT, async (req,res,next)=>{
     console.log(req.body)
     try{
         const {in_area}=req.body
 
+        const userid=req.user.userid
+
+
+
         await pool.query(
-           `INSERT into socket_DB(text)
-            VALUES (?)`,[in_area]
+           `INSERT into socket_DB(Sender_id,Text)
+            VALUES (?,?)`,[userid , in_area]
         )
 
         res.status(201).send({message: "success"})
@@ -77,10 +75,6 @@ app.post("/sign_UP", async (req,res,next)=>{
     const {userName,userEmail,pass} = req.body
     const hashedPassowrd= await bcrypt.hash(pass, 10)
 
-    //  if(!userName || !userEmail || !pass){
-    //   return res.status(400).send({message:"fields are empty please fill them up"})
-    //  }
-
     const [NAME] =  await pool.query(
       `SELECT * FROM sign_UP WHERE name = ?
       `,[userName]
@@ -93,7 +87,6 @@ app.post("/sign_UP", async (req,res,next)=>{
       
     const useremail=EMAIL[0]
     const User=NAME[0]
-    
 
     if(useremail && User){
       return res.status(401).json({error:"UserName and Email already exists"});
@@ -103,17 +96,11 @@ app.post("/sign_UP", async (req,res,next)=>{
       return res.status(401).json({error:"Email already exists"});
      }
 
-    
-
-
-
     await pool.query(
       `INSERT INTO sign_UP (name, email,pass )
       VALUES (?,?,?)
       `,[userName,userEmail,hashedPassowrd]
      )
-
-     const check =jwt.compare(token,refresh)
 
      const token=jwt.sign(
         {userid: User.id},
@@ -142,17 +129,12 @@ app.post("/sign_UP/login", async (req,res,next)=>{
     const [row] = await pool.query(`SELECT * FROM sign_UP WHERE
         email=?`,[logEmail]
       )
-
       const user=row[0]
-
       if(!user){
         return res.status(401).send({error: "User not found"})
       }
 
-      
-
       const isMatch= await bcrypt.compare(loginPass,user.pass)
-
       if(!isMatch){
         return res.status(401).send({error: "Wrong password"})
       }
@@ -162,9 +144,7 @@ app.post("/sign_UP/login", async (req,res,next)=>{
         process.env.JWT_SECRET,
         {expiresIn:"7d"}
      )
-
     return res.status(201).send({ message: `Success: ${user.name}`,token:token});
- 
   }catch(err){
     console.error(err)
     next(err)
@@ -172,11 +152,23 @@ app.post("/sign_UP/login", async (req,res,next)=>{
 
 })
 
-app.post("/checkJWT", async (req,res)=>{
-  const token = headers.Authorization.split("")[1]
-  const decoded=jwt.verify(token,process.env.JWT_SECRET)
-  res.json({userid:decoded.userid})
-})
+async function checkJWT(req,res,next){
+  const token = req.headers.authorization?.split(" ")[1]
+  if(!token){
+    res.status(401).json({error: "no Token!!"})
+  }
+  try{
+      const decoded=jwt.verify(token,process.env.JWT_SECRET)
+      // res.json({userid:decoded.userid})
+
+      req.user=decoded
+
+      return next()
+  }catch{
+    return res.status(401).json({error: "Invalid Token"})
+  }
+
+}
 
 app.get("/", (req, res) => {
     res.sendFile(path.resolve("public/index.html"));
